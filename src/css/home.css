@@ -1,0 +1,17 @@
+#bg{
+    height: 560px;
+    width: 100%;
+    background-image: url('../assets/img/BG.jpg');
+    opacity: 100%;
+    background-position: bottom;
+    background-size: cover;
+}
+#banner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/* #banner form input{
+    width: 25em;
+} */

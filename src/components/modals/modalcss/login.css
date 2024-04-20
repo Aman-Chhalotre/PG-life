@@ -1,0 +1,12 @@
+#login-container{
+    background-color: rgb(255, 255, 255);
+    top: 30%;
+    left: 30%;
+}
+#login-container form input{
+    display: block;
+    margin-bottom: 10px;
+}
+#loginbutton{
+    background-color: #FF5F38;
+}
