@@ -45,10 +45,10 @@ function RegisterProperty() {
 
               propertyService.getImageUrl(response.$id)
                 .then((res) => {
-                  console.log(res.href)
+
                   propertyService.storePropertyImages(res.href, value.$id)
                     .then((res) => {
-                      console.log(res)
+                      // console.log(res)
                     })
                   propertyService.setThumbnailImage(value.$id, res.href)
                 })

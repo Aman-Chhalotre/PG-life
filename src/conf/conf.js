@@ -1,8 +1,8 @@
 const conf = {
+    appwriteApiKey: String(import.meta.env.VITE_APPWRITE_API_KEY),
     appwriteUrl: String(import.meta.env.VITE_APPWRITE_URL),
     appwriteProjectId: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),
     appwriteDatabaseId: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
-    appwriteUserDetailCollectionId: String(import.meta.env.VITE_APPWRITE_USER_DETAIL_COLLECTION_ID),
     appwriteCitiesCollectionId: String(import.meta.env.VITE_APPWRITE_CITIES_COLLECTION_ID),
     appwritePropertiesCollectionId: String(import.meta.env.VITE_APPWRITE_PROPERTIES_COLLECTION_ID),
     appwriteAmenitiesCollectionId: String(import.meta.env.VITE_APPWRITE_AMENITIES_COLLECTION_ID),

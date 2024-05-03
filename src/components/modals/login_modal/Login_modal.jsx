@@ -21,7 +21,7 @@ function Login_modal() {
   const { register, handleSubmit, reset, formState } = form
   const { errors } = formState
 
-  const { isLoggedIn, phone} = useLogin()
+  const { isLoggedIn, phone } = useLogin()
 
   const dispatch = useDispatch()
 
@@ -31,11 +31,11 @@ function Login_modal() {
     authService.login(String(data.email), String(data.password))
       .then((userData) => {
         if (userData) {
-          console.log(userData)
+
           updateService.updatePhone('+91' + String(phone), String(data.password))
-          .then((response)=>{
-            console.log(response)
-          })
+            .then((response) => {
+              // console.log(response)
+            })
           authService.getPrefs()
             .then((val) => {
 
@@ -43,7 +43,7 @@ function Login_modal() {
                 if (label == 'admin') {
                   authService.updatePref(label)
                     .then((response) => {
-                      console.log(response)
+
                       if (response.prefs.label == 'admin') {
                         navigate('/RegisterProperty')
                       } else {
@@ -53,7 +53,7 @@ function Login_modal() {
                 } else if (label == 'user') {
                   authService.updatePref(label)
                     .then((response) => {
-                      console.log(response)
+
                       if (response.prefs.label == 'user') {
                         navigate('/')
                       }
@@ -66,7 +66,7 @@ function Login_modal() {
 
           authService.getCurrentUser()
             .then((userData) => {
-              console.log(userData)
+
               if (userData) {
                 dispatch(getUserData({ userData }))
               } else {

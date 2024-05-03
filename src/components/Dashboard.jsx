@@ -1,109 +1,165 @@
 import React, { useEffect, useState } from 'react'
 import './../css/dashboard.css'
-import { Link  } from 'react-router-dom'
-// import { datas } from '../data/data'
-import useDetail from '../context/details'
-import { useSelector } from 'react-redux'
+import male from '../assets/img/male.png'
+import female from '../assets/img/female.png'
+import unisex from '../assets/img/unisex.png'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import interestedpropertiesService from '../appwrite/interestedProperties'
+import propertyService from '../appwrite/property'
+import { getPropertyId } from '../../store/propertySlice.js'
 
 
 function Dashboard() {
-  const { setId } = useDetail()
+  const [interestedProperties, setInterestedProperties] = useState([])
 
-  const data = useSelector((state)=> state.authReducer.userData)
-  // console.log(data)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const data = useSelector((state) => state.authReducer.userData)
 
-  
+
+  function handleClick(id) {
+    dispatch(getPropertyId({ id }))
+
+  }
+
+
+  useEffect(() => {
+    interestedpropertiesService.getInterestedProperties(data.$id)
+      .then((res) => {
+
+        propertyService.getProperties()
+          .then((response) => {
+            // console.log(response.documents)
+            let val = [];
+            res.documents?.map((value) => {
+              let result = response.documents.filter((property) => property.$id == value.property_id)
+              val.push(result[0])
+            })
+            setInterestedProperties(val)
+
+
+          })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+
+  }, [])
+
+
+  function RemoveInterestedProperty(id) {
+    interestedpropertiesService.getInterestedProperties(data.$id)
+      .then((res) => {
+
+        res.documents.map((interestedProp) => {
+          if (interestedProp.property_id === id) {
+            interestedpropertiesService.deleteInterestedProperties(interestedProp.$id)
+              .then(() => {
+                navigate('/Dashboard')
+              })
+          }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+  }
 
   return (
     <>
-      <div id='main' className='mt-20 h-auto flex flex-col items-center mobile:items-start mobile:ms-2 fold-screen:items-start fold-screen:ms-2'>
+      <div id='main' className='mt-20 min:h-[100vh] h-auto flex flex-col items-center gap-4'>
 
-        <div id='info' className='h-60 mb-32 '>
+        <div id='info' className='h-60 '>
 
           <div>
-            <h1 className='text-4xl font-medium text-gray-700 mobile:text-xl fold-screen:text-xl'>My Profile</h1>
+            <h1 className='sm:text-2xl text-center font-medium text-gray-700 text-xl'>My Profile</h1>
           </div>
 
           <div className='flex'>
             <div className='mt-10'>
-              <i className="fa-solid fa-user text-slate-500 text-8xl mobile:text-5xl fold-screen:text-3xl"></i>
+              <i className="fa-solid fa-user text-slate-500 sm:text-8xl text-6xl"></i>
             </div>
 
             <div className='ps-10 w-full mt-10'>
-              <h1 className='text-xl font-bold text-gray-700 mobile:text-sm fold-screen:text-sm'>{data?.name.toUpperCase()}</h1>
-              <h1 className='text-gray-600 mobile:text-xs fold-screen:text-xs'><i className="fa-regular fa-envelope mobile:text-xs fold-screen:text-xs"></i> {data?.email}</h1>
-              <h1 className='text-gray-600 mobile:text-xs fold-screen:text-xs'><i className="fa-solid fa-phone mobile:text-xs fold-screen:text-xs"></i> {data?.phone}</h1>
+              <h1 className='font-bold text-gray-700 sm:text-xl text-sm '>{data?.name.toUpperCase()}</h1>
+              <h1 className='text-gray-600 sm:text-base text-xs'><i className="fa-regular fa-envelope sm:text-base text-xs"></i> {data?.email}</h1>
+              <h1 className='text-gray-600 sm:text-base text-xs'><i className="fa-solid fa-phonesm:text-base text-xs"></i> {data?.phone}</h1>
               <div className='flex justify-between items-end'>
-                
-                <Link to='/Editpage' className='text-gray-600 text-xs underline'>Edit Profile</Link>
+
+                <Link to='/Editpage' className='text-gray-600 text-xs underline mt-1.5'>Edit Profile</Link>
               </div>
             </div>
           </div>
 
         </div>
+        <div>
+          <h1 className='text-start text-xl font-semibold text-gray-500'>Interested Properties</h1>
+        </div>
+        {interestedProperties?.map((property) =>
 
-        {/* {arr?.map((data) => 
-          
-            <div id='interests' className='w-1/2 mb-4 ' key={data.id}>
+          <div id='box' className='h-auto lg:w-[900px] sm:w-[650px] w-[90%] border p-3 mb-3 rounded flex sm:flex-row flex-col items-center shadow' key={property.id}>
 
-              <div className='h-60  border-2 p-3 rounded flex'>
+            <div className=''>
+              <img src={property.thumbnail_image} alt="" className='h-40 sm:w-80 w-[250px] rounded' />
 
-                <div className=''>
-                  <img src={data.thumbnail} alt="" className='h-40 w-80 rounded' />
+            </div>
+
+            <div className='sm:ms-3 w-full'>
+
+              <div className='flex justify-between'>
+                <div>
+
+                  {('') ? <i className="fa-solid fa-star text-red-600 sm:text-lg text-sm" onClick={() => { setRating(!rating) }}></i> : <i className="fa-regular fa-star text-red-600 sm:text-lg text-sm" onClick={() => { setRating(!rating) }}></i>}
+
                 </div>
 
-                <div className='ms-3 w-full'>
+                <div>
+                  <button onClick={() => { RemoveInterestedProperty(property.$id) }}>
 
-                  <div className='flex justify-between'>
-                    <div>
-                      <i class="fa-regular fa-star text-red-600"></i>
-                      <i class="fa-regular fa-star text-red-600"></i>
-                      <i class="fa-regular fa-star text-red-600"></i>
-                      <i class="fa-regular fa-star text-red-600"></i>
-                      <i class="fa-regular fa-star text-red-600"></i>
+                    <h1 className='text-sm font-medium text-gray-600'>Remove</h1>
 
-                      {/* <i class="fa-solid fa-star text-red-600"></i>
-                    <i class="fa-solid fa-star text-red-600"></i>
-                    <i class="fa-solid fa-star text-red-600"></i>
-                    <i class="fa-solid fa-star text-red-600"></i>
-                    <i class="fa-solid fa-star text-red-600"></i> */}
-                    {/* </div> */}
+                  </button>
 
-                    {/* <div>
-                    
-                      <button onClick={() => {setTemp(!temp)}}>
-                    
-                        {(data.interested) ? <i className="fa-solid fa-heart text-red-600"></i> : <i className="fa-regular fa-heart text-red-600"></i>}
-                    
-                      </button>
+                </div>
 
-                    </div> */}
+              </div>
 
-                  {/* </div> */}
+              <div className='mt-2'>
+                <h1 className='font-medium text-lg text-gray-700'>{property.name}</h1>
+                <h1 className='pt-1 text-xs text font-medium text-slate-500'>{property.address}</h1>
+                <h1 className='pt-1 text-xs text font-medium text-slate-500'>{property.city_name}</h1>
+                {
+                  (property.gender == 'male') ? <img src={male} alt="" className='h-10 mt-2' /> :
+                    (property.gender == 'female') ? <img src={female} alt="" className='h-10 mt-2' /> :
+                      (property.gender == 'unisex') ? <img src={unisex} alt="" className='h-10 mt-2' /> : null
 
-                  {/* // <div className='mt-2'>
-                  //   <h1 className='font-medium text-lg text-gray-700'>{data.name}</h1>
-                  //   <h1 className='pt-1 text-xs text font-medium text-slate-500'>{data.address}</h1>
-                  //   <img src={data.gender} alt="" className='h-10 mt-2' />
-                  // </div> */}
+                }
 
-                  {/* // <div className='mt-5 flex justify-between'>
-                  //   <div className='flex items-center'>
-                  //     <h1 className='font-medium text-gray-700'>₹ {data.rent}</h1>
-                  //     &nbsp;
-                  //     <h1 className='text-xs text-gray-600'>per month</h1>
-                  //   </div>
-                  //   <div>
-                  //   <Link to='/Property_Detail' onClick={() => { setId(data.id) }} className='bg-cyan-600 w-28 p-1 px-5 rounded text-white font-medium hover:bg-cyan-700'>View</Link>
-                  //   </div>
-                  // </div> */}
+              </div>
 
-            {/* //     </div> */}
+              <div className='sm:mt-5 mt-2 flex sm:flex-row sm:gap-0 justify-between flex-col gap-2 items-end'>
 
-            {/* //   </div> */}
-            {/* // </div> */}
-          
-        {/* // )} */} 
+                <div className='flex items-center'>
+                  <h1 className='font-medium text-gray-700 sm:text-xl text-lg'>₹ {property.rent}</h1>
+                  &nbsp;
+                  <h1 className='text-xs text-gray-600'>per month</h1>
+                </div>
+
+                <div>
+                  <Link to='/Property_Detail' onClick={() => { handleClick(property.$id) }} className='bg-cyan-600 w-24 p-1 px-5 rounded text-white font-medium hover:bg-cyan-700 '>View</Link>
+                  {console.log(property.$id)}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+        )}
+
       </div>
 
     </>

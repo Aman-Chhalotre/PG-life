@@ -7,14 +7,12 @@ import hyderabad from '../assets/img/hyderabad.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap/dist/gsap'
 import { useEffect } from 'react'
-import useSearch from '../context/search.js'
 import propertyService from '../appwrite/property.js'
 import { useDispatch } from 'react-redux'
 import { getProperties } from '../../store/propertySlice.js'
 
 function Home() {
 
-  const { setSearch, setData } = useSearch()
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
@@ -46,14 +44,13 @@ function Home() {
     const searchedCity = search
     propertyService.searchProperties(search)
       .then((response) => {
-        console.log(response)
-        console.log(searchedCity)
+
         const searchedProperties = response.documents.filter((property) => {
           const propertyName = property.city_name
           return propertyName.toUpperCase() == searchedCity
         })
         navigate('/properties_list')
-        console.log(searchedProperties)
+
         dispatch(getProperties(searchedProperties))
       })
   }

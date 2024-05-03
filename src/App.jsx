@@ -1,4 +1,4 @@
-import { Link, NavLink,  Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import './App.css'
 import { useState, useEffect } from 'react'
 import Header from './components/header-footer/Header'
@@ -20,19 +20,20 @@ function App() {
 
 
   const dispatch = useDispatch()
+
   useEffect(() => {
     authService.getCurrentUser()
       .then((userData) => {
-        console.log(userData)
+        // console.log(userData)
         if (userData) {
           dispatch(getUserData({ userData }))
-          if(userData.prefs.label == 'admin'){  
+          if (userData.prefs.label == 'admin') {
             setIsAdmin(true)
           }
         } else {
           dispatch(logout())
         }
-          
+
       })
       .catch((error) => {
         console.log(error)
@@ -63,9 +64,9 @@ function App() {
         <SignupContextProvider value={{ showSignup, setshowSignup, isSignup, setIsSignup, label, setLabel }}>
           {(!authStatus) ?
 
-            <Modals/>
+            <Modals />
             :
-            <SearchContextProvider value={{ }}>
+            <SearchContextProvider value={{}}>
 
 
               <Header isAdmin={isAdmin}></Header>

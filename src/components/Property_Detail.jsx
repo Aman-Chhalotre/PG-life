@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import '../css/property_detail.css'
-import { Link } from 'react-router-dom'
+import { Link, json } from 'react-router-dom'
 import { gsap } from 'gsap/dist/gsap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -60,17 +60,17 @@ function Property_Detail() {
 
 
     function onhandleTestimonialsubmit(data) {
-        console.log(data)
-        console.log(userData)
+
         testimonialService.storeTestimonial(propertyId, userData.name, data.testimonial)
             .then((response) => {
-                console.log(response)
+                // console.log(response)
 
             })
 
         setShowTextfield(!showTextfield)
         reset()
     }
+
 
 
     useEffect(() => {

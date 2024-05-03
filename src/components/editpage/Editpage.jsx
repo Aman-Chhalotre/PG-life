@@ -34,7 +34,7 @@ function Editpage() {
     console.log('old email' + oldEmail, 'new email' + newEmail)
     updateService.updateEmail(password, String(newEmail))
       .then((response) => {
-        console.log(response)
+        // console.log(response)
       })
       .catch((err) => {
         console.log(err)
@@ -47,7 +47,7 @@ function Editpage() {
     console.log('phonenumber' + phoneNumber, 'password' + password)
     updateService.updatePhone("+91" + phoneNumber, password)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
       })
       .catch((err) => {
         console.log(err)

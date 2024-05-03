@@ -52,7 +52,6 @@ function Header({ isAdmin }) {
 
     propertyService.searchProperties(search.toUpperCase())
       .then((response) => {
-        console.log(response)
 
         const searchedProperties = response.documents.filter((property) => {
           const propertyName = property.city_name
@@ -67,7 +66,6 @@ function Header({ isAdmin }) {
   function handlePropertyListClick() {
     propertyService.getProperties()
       .then((response) => {
-        console.log(response.documents)
         dispatch(getProperties(response.documents))
       })
   }

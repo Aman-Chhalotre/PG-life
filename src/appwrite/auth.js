@@ -18,39 +18,39 @@ export class AuthService {
 
     async createAccount(email, password, name) {
         try {
-        return await this.account.create(ID.unique(), email, password, name)
-            
+            return await this.account.create(ID.unique(), email, password, name)
+
         } catch (error) {
             throw error;
         }
     }
     async getPrefs() {
         try {
-        return await this.account.getPrefs();
-            
+            return await this.account.getPrefs();
+
         } catch (error) {
             throw error;
         }
-        
+
     }
-    async updatePref( label ) {
+    async updatePref(label) {
         try {
-        return await this.account.updatePrefs({ label : label})
-            
+            return await this.account.updatePrefs({ 'label': label })
+
         } catch (error) {
             throw error;
         }
-        
+
     }
 
     async storePhone(Phone, password) {
         try {
-            return await this.account.updatePhone(Phone, password)    
+            return await this.account.updatePhone(Phone, password)
         } catch (error) {
             throw error;
         }
     }
-    
+
 
     async creatUserDocument(data) {
         try {
@@ -61,7 +61,7 @@ export class AuthService {
                 {
                     email: String(data.email),
                     name: String(data.fullname),
-                    phone:String( data.phoneNumber),
+                    phone: String(data.phoneNumber),
                     college_name: String(data.collegeName),
                     city: String(data.city),
                     gender: String(data.gender)

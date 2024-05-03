@@ -12,15 +12,17 @@ import propertyService from '../appwrite/property.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProperties } from '../../store/propertySlice.js'
 import { getPropertyId } from '../../store/propertySlice.js'
+import interestedpropertiesService from '../appwrite/interestedProperties.js'
 
 
 
 function Properties_List() {
+
   const [rating, setRating] = useState(false)
   const [showfilter, setShowfilter] = useState(false)
 
 
-  const dispatch = useDispatch()
+
 
 
   useEffect(() => {
@@ -42,10 +44,24 @@ function Properties_List() {
     dispatch(getPropertyId({ id }))
   }
 
+
+  const dispatch = useDispatch()
+  const userData = useSelector((state) => state.authReducer.userData)
+
+
+  function InterestedHandleClick(id) {
+
+    interestedpropertiesService.storeInterestedProperties(id, userData.$id)
+      .then((response) => {
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   function showAllProperties() {
     propertyService.getProperties()
       .then((response) => {
-        console.log(response.documents)
         dispatch(getProperties(response.documents))
       })
   }
@@ -70,7 +86,7 @@ function Properties_List() {
 
         {properties?.map((property) =>
 
-          <div id='box' className='h-auto lg:w-[900px] sm:w-[650px] w-[90%] border p-3 rounded flex sm:flex-row flex-col items-center' key={property.id}>
+          <div id='box' className='h-auto lg:w-[900px] sm:w-[650px] w-[90%] border p-3 rounded flex sm:flex-row flex-col items-center shadow' key={property.id}>
 
             <div className=''>
               <img src={property.thumbnail_image} alt="" className='h-40 sm:w-80 w-[250px] rounded' />
@@ -87,9 +103,9 @@ function Properties_List() {
                 </div>
 
                 <div>
-                  <button>
+                  <button onClick={() => { InterestedHandleClick(property.$id) }}>
 
-                    {(property.interested) ? <i className="fa-solid fa-heart text-red-600 sm:text-lg text-sm"></i> : <i className="fa-regular fa-heart text-red-600 sm:text-lg text-sm"></i>}
+                    <h1 className='text-sm font-medium text-gray-600'>Save</h1>
 
                   </button>
 
