@@ -8,7 +8,6 @@ import RegisterProperty from './registerProperty/RegisterProperty';
 
 function Modals() {
   const [show, setShow] = useState(true)
-  const [showRegisterProperty, setshowRegisterProperty] = useState(false)
   const { showLogin } = useLogin()
   const { setshowLogin } = useLogin()
 
@@ -18,34 +17,14 @@ function Modals() {
 
   return (
     <>
-      <div id='modal' className='h-screen'>
+      <div id='modal' className='h-screen w-full'>
 
-        
-
-        {(!showRegisterProperty) ?
-
-          <div>
-            
-            <div className="modals p-3 flex justify-center text-white">
-              <button className={`sm:text-lg border-none text-sm py-1 px-3 rounded-l-lg transition-all ${(showSignup)? 'bg-white text-black' : 'bg-black text-white'}`} onClick={() => { setshowSignup(!showSignup); setshowLogin(false) }}>
-                <i className="fa-solid fa-user"></i>&nbsp;
-                Signup
-              </button>
-
-              <button className={`sm:text-lg border-none text-sm py-1 px-3 rounded-r-lg transition-all ${(showLogin)? 'bg-white text-black' : 'bg-black text-white'}`} onClick={() => { setshowLogin(!showLogin); setshowSignup(false) }}>
-                <i className="fa-solid fa-right-to-bracket"></i>&nbsp;
-                Login
-              </button>
-            </div>
-            <div className=' flex justify-center items-center'>
-              <Login_modal />
-              <Signup_modal />
-            </div>
+        <div className='h-full w-full flex  justify-center items-center '>
+          <div className='lg:w-[65%] sm:w-[80%] w-[100%] flex items-center  h-[480px]'>
+            <Login_modal />
+            <Signup_modal />
           </div>
-          :
-          <RegisterProperty />
-        }
-
+        </div>
 
       </div>
     </>

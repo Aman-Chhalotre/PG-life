@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../modalcss/login.css'
+import { gsap } from 'gsap/dist/gsap'
 import useLogin from '../../../context/login.js'
 import useSignup from '../../../context/signup.js'
 import { useForm } from 'react-hook-form'
@@ -16,6 +17,18 @@ function Login_modal() {
   const { showLogin } = useLogin()
   const { setshowLogin } = useLogin()
   const { label, setshowSignup } = useSignup()
+
+
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      gsap.from('#login-container', {
+        x: -50,
+        duration: 0.5,
+      })
+    }
+    )
+    return () => ctx.revert();
+  }, [showLogin])
 
   const form = useForm()
   const { register, handleSubmit, reset, formState } = form
@@ -93,11 +106,25 @@ function Login_modal() {
 
   return (
     <>
-      <div id='login-container' className={`md:w-[35%] sm:w-[40%] w-[80%] rounded mt-10 bg-black shadow-[#000000a2] shadow-xl transition-all ${(showLogin) ? 'block  blur-none' : 'hidden duration-100'} ${(isLoggedIn) ? 'hidden' : 'block'}`}>
-        <div id="login_modal" className='text-center'>
-          <h3 className='text-xl font-semibold text-white'>Login</h3>
-          <hr />
-          <form className='mt-5 flex flex-col items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <div className={`${(!showLogin) ? 'block' : 'hidden'} h-full sm:w-[50%] w-[30%] rounded-l-lg shadow-[#000000a2] shadow-xl transition-all bg-white text-center flex flex-col justify-between py-12`}>
+        <div>
+          <h1 className='sm:text-4xl text-2xl font-semibold'>Signup</h1>
+          <h1 className='py-2 sm:text-base text-xs font-medium'>Create your account</h1>
+        </div>
+        <div>
+          <h1 className='sm:text-base text-sm font-medium'>Already have an Account?</h1>
+          <button className={`sm:text-base text-sm border-none py-1 px-3 rounded-r-lg transition-all text-black`} onClick={() => { setshowLogin(!showLogin); setshowSignup(false) }}>
+
+            Login
+          </button>
+        </div>
+      </div>
+
+
+      <div id='login-container' className={`h-full sm:w-[50%] w-[75%] rounded-l-lg bg-black shadow-[#000000a2] shadow-xl transition-all  ${(showLogin) ? 'block  blur-none' : 'hidden duration-100'} ${(isLoggedIn) ? 'hidden' : 'block'}`}>
+        <div id="login_modal" className='text-center '>
+
+          <form className='mt-16 flex flex-col justify-center items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
 
             <input type="email" name="email" placeholder="Email" className=' sm:h-[50px] h-[40px] w-60 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300' {...register('email', {
               required: "* Email is required"
@@ -109,8 +136,11 @@ function Login_modal() {
             })} />
             <p className='text-red-500 -mt-3 text-xs self-start ps-5'>{errors.password?.message}</p>
 
-            <button type='submit' id='loginbutton' className='text-black w-24 rounded-lg py-1 font-medium mt-2 bg-white'>Login</button>
-            <p className='signup_link mt-3 text-gray-500'>Create an Account <Link className='text-white' style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => { setshowSignup(true); setshowLogin(false) }}> Signup</Link></p>
+            <button type='submit' id='loginbutton' className='text-black w-52 rounded-lg py-1 font-medium mt-2 bg-white'>
+              <i className="fa-solid fa-right-to-bracket"></i>&nbsp;
+              Login
+            </button>
+            {/* <p className='signup_link mt-3 text-gray-500'>Create an Account <Link className='text-white' style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => { setshowSignup(true); setshowLogin(false) }}> Signup</Link></p> */}
 
           </form>
         </div>
