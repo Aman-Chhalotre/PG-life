@@ -84,7 +84,7 @@ function RegisterProperty() {
   return (
     <>
       <div id='modal' className=' '>
-        <div className='p-5 flex flex-col gap-5 items-center justify-center'>
+        <div className='py-5 flex flex-col gap-5 items-center justify-center'>
           <h1 className='text-white sm:text-4xl text-2xl font-medium text-center'>Register Property</h1>
           <button className='self-center sm:text-sm text-xs font-bold bg-white sm:p-2 p-1 rounded' onClick={() => { navigate('/') }}>Skip for now</button>
 
@@ -243,13 +243,13 @@ function RegisterProperty() {
 
           </form>
 
-          <form className=' sm:w-[80%] w-[100%] p-3' onSubmit={handleSubmit(onSubmit)}>
+          <form className=' sm:w-[80%] w-[100%]' onSubmit={handleSubmit(onSubmit)}>
             <h1 className='text-xl text-white font-medium text-center mb-5'>Register Property Images</h1>
             <div className='flex flex-col items-center gap-5'>
 
               {fields.map((field, index) => (
                 <div key={field.id} className='w-full flex flex-col items-center'>
-                  <input type='file' id='image' name='image' accept="image/png, image/jpg, image/jpeg" className='h-[70px] w-[50%] border text-center text-white' {...register(`images.${index}.image`, {
+                  <input type='file' id='image' name='image' accept="image/png, image/jpg, image/jpeg" className='h-[70px] sm:w-[50%] w-[80%] border text-center text-white' {...register(`images.${index}.image`, {
                     required: "*Please provide an image"
                   })} />
                   <p className='text-red-600 sm:text-sm text-xs'>{errors.image?.message}</p>
