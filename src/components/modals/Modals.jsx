@@ -20,10 +20,10 @@ function Modals() {
       <div id='modal' className='h-screen w-full'>
 
         <div className='h-full w-full flex  justify-center items-center '>
-          <div className='lg:w-[65%] sm:w-[80%] w-[100%] flex items-center  h-[480px]'>
-            <Login_modal />
-            <Signup_modal />
-          </div>
+
+          <Login_modal />
+          <Signup_modal />
+
         </div>
 
       </div>

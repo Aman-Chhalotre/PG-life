@@ -94,7 +94,7 @@ function Property_Detail() {
     }, [])
 
 
-
+    console.log(detail)
     return (
         <>
 
@@ -116,7 +116,6 @@ function Property_Detail() {
                     </div>
 
                 </Swiper>
-
 
 
 
@@ -180,52 +179,13 @@ function Property_Detail() {
 
                 <div id='amenities' className='sm:h-96 mt-16 flex flex-col items-center gap-5 '>
                     <div>
-                        <h1 className='sm:text-4xl font-semibold text-gray-700 text-2xl'>Amenities</h1>
+                        <h1 className='sm:text-4xl font-semibold text-gray-700 text-2xl text-center'>Amenities</h1>
                     </div>
                     <div className='flex justify-center gap-5 sm:flex-row flex-col '>
-                        <div className='flex gap-3'>
-                            <div >
-                                <h1 className='text-lg font-semibold text-gray-600 '>Building</h1>
-                                <div className='mt-2'>
-                                    {
-                                        // detail.amenities.building.map((amenity) =>
-                                        //     <img src={amenity} alt="" className='mb-2 text-gray-600' key={detail?.id} />
-                                        // )
-                                    }
-                                </div>
-                            </div>
-                            <div>
-                                <h1 className='text-lg font-semibold text-gray-600 '>Common Area</h1>
-                                <div className='mt-2'>
-                                    {
-                                        // detail.amenities.commonArea.map((amenity) =>
-                                        //     <img src={amenity} alt="" className='mb-2' />
-                                        // )
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div className='flex gap-3'>
-                            <div>
-                                <h1 className='text-lg font-semibold text-gray-600 '>Bedroom</h1>
-                                <div className='mt-2'>
-                                    {
-                                        // detail.amenities.bedroom.map((amenity) =>
-                                        //     <img src={amenity} alt="" className='mb-2' />
-                                        // )
-                                    }
-                                </div>
-                            </div>
-                            <div>
-                                <h1 className='text-lg font-semibold text-gray-600 '>Washroom</h1>
-                                <div className='mt-2'>
-                                    {
-                                        // detail.amenities.washroom.map((amenity) =>
-                                        //     <img src={amenity} alt="" className='mb-2' />
-                                        // )
-                                    }
-                                </div>
-                            </div>
+                        <div className='sm:flex items-center gap-3'>
+                            {detail?.amenities?.map((amenity) =>
+                                <p className='text-gray-600 sm:text-lg font-semibold'>{amenity}</p>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
+
 import conf from '../conf/conf.js'
-import { Client, ID, Databases, Storage, Query } from 'appwrite'
+import { Client, ID, Databases, Storage, Query, Permission, Role } from 'appwrite'
 
 export class PropertyService {
     client = new Client();
@@ -12,7 +13,7 @@ export class PropertyService {
             .setProject(conf.appwriteProjectId);
     }
 
-    async createProperty(name, address, description, gender, rent, city_name) {
+    async createProperty(name, address, description, gender, rent, city_name, amenities, userId) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -24,8 +25,15 @@ export class PropertyService {
                     description,
                     gender,
                     rent,
-                    city_name
-                }
+                    city_name,
+                    amenities
+                },
+                [
+                    Permission.read(Role.user(userId)),
+                    Permission.update(Role.user(userId)),
+                    Permission.delete(Role.user(userId))
+                ]
+
             )
         } catch (error) {
             console.log("Appwrite service :: createProperty :: error", error);
@@ -40,17 +48,17 @@ export class PropertyService {
             console.log("Appwrite service :: storeImages :: error", error)
         }
     }
-    async storePropertyImages(image_url,properties_id) {
+    async storePropertyImages(image_url, properties_id) {
         try {
             return await this.databases.createDocument(
-                conf.appwriteDatabaseId, 
+                conf.appwriteDatabaseId,
                 conf.appwritePropertiesImagesCollectionId,
-                 ID.unique(), 
-                 {
+                ID.unique(),
+                {
                     image_url,
                     properties_id
-                 }
-                )
+                }
+            )
         } catch (error) {
             console.log("Appwrite service :: storePropertyImages :: error", error)
         }
@@ -73,20 +81,20 @@ export class PropertyService {
             console.log("Appwrite service :: getImageUrl :: error", error)
         }
     }
-    async setThumbnailImage(id, url) {
-        try {
-            const result = this.databases.updateDocument(
-                conf.appwriteDatabaseId,
-                conf.appwritePropertiesCollectionId,
-                id,
-                {
-                    thumbnail_image: url
-                })
-            return result
-        } catch (error) {
-            console.log("Appwrite service :: setThumbnailImage :: error", error)
-        }
+    async setThumbnailImage(documentId, url, userId) {
+        return await this.databases.updateDocument(
+            conf.appwriteDatabaseId,
+            conf.appwritePropertiesCollectionId,
+            documentId,
+            {
+                thumbnail_image: url
+            },
+            [
+                Permission.update(Role.user(userId))
+            ]
+        )
     }
+
     async getPropertiesImages() {
         try {
             return await this.databases.listDocuments(

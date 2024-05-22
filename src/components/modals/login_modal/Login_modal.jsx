@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../modalcss/login.css'
-import { gsap } from 'gsap/dist/gsap'
 import useLogin from '../../../context/login.js'
 import useSignup from '../../../context/signup.js'
 import { useForm } from 'react-hook-form'
@@ -19,22 +17,12 @@ function Login_modal() {
   const { label, setshowSignup } = useSignup()
 
 
-  useEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.from('#login-container', {
-        x: -50,
-        duration: 0.5,
-      })
-    }
-    )
-    return () => ctx.revert();
-  }, [showLogin])
 
   const form = useForm()
   const { register, handleSubmit, reset, formState } = form
   const { errors } = formState
 
-  const { isLoggedIn, phone } = useLogin()
+  const { phone } = useLogin()
 
   const dispatch = useDispatch()
 
@@ -49,29 +37,25 @@ function Login_modal() {
             .then((response) => {
               // console.log(response)
             })
+
+          console.log(label)
+
           authService.getPrefs()
             .then((val) => {
-
+              console.log(val)
               if (Object.entries(val).length == 0 && label !== null) {
-                if (label == 'admin') {
-                  authService.updatePref(label)
-                    .then((response) => {
 
-                      if (response.prefs.label == 'admin') {
-                        navigate('/RegisterProperty')
-                      } else {
-                        navigate('/')
-                      }
-                    })
-                } else if (label == 'user') {
-                  authService.updatePref(label)
-                    .then((response) => {
+                authService.updatePref(label)
+                  .then((response) => {
+                    console.log(response)
 
-                      if (response.prefs.label == 'user') {
-                        navigate('/')
-                      }
-                    })
-                }
+                    if (response.prefs.label == 'admin') {
+                      navigate('/RegisterProperty')
+                    } else {
+                      navigate('/')
+                    }
+                  })
+
 
               }
 
@@ -106,41 +90,39 @@ function Login_modal() {
 
   return (
     <>
-      <div className={`${(!showLogin) ? 'block' : 'hidden'} h-full sm:w-[50%] w-[30%] rounded-l-lg shadow-[#000000a2] shadow-xl transition-all bg-white text-center flex flex-col justify-between py-12`}>
-        <div>
-          <h1 className='sm:text-4xl text-2xl font-semibold'>Signup</h1>
-          <h1 className='py-2 sm:text-base text-xs font-medium'>Create your account</h1>
-        </div>
-        <div>
-          <h1 className='sm:text-base text-sm font-medium'>Already have an Account?</h1>
-          <button className={`sm:text-base text-sm border-none py-1 px-3 rounded-r-lg transition-all text-black`} onClick={() => { setshowLogin(!showLogin); setshowSignup(false) }}>
-
-            Login
-          </button>
-        </div>
-      </div>
 
 
-      <div id='login-container' className={`h-full sm:w-[50%] w-[75%] rounded-l-lg bg-black shadow-[#000000a2] shadow-xl transition-all  ${(showLogin) ? 'block  blur-none' : 'hidden duration-100'} ${(isLoggedIn) ? 'hidden' : 'block'}`}>
+      <div id='login-container' className={`h-[480px] sm:w-[40%] w-[75%] py-2 transition-all ${(showLogin) ? 'block' : 'hidden'}`}>
         <div id="login_modal" className='text-center '>
 
-          <form className='mt-16 flex flex-col justify-center items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+          <div className='text-white'>
+            <h1 className='sm:text-4xl text-2xl font-semibold'>Welcome Back</h1>
+            <h1 className='py-2 font-medium sm:text-base text-xs'>Login to your account</h1>
+          </div>
 
-            <input type="email" name="email" placeholder="Email" className=' sm:h-[50px] h-[40px] w-60 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300' {...register('email', {
+          <form className='mt-16 flex flex-col justify-center items-center text-center gap-[10px]' onSubmit={handleSubmit(onSubmit)}>
+
+            <input type="email" name="email" placeholder="Email" className=' sm:h-[50px] h-[40px] w-8/12 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' {...register('email', {
               required: "* Email is required"
             })} />
-            <p className='text-red-500 -mt-3 text-xs self-start ps-5'>{errors.email?.message}</p>
+            <p className='text-red-500 text-xs '>{errors.email?.message}</p>
 
-            <input type="password" name="password" placeholder="Password" className='sm:h-[50px] h-[40px] w-60 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300' {...register('password', {
+            <input type="password" name="password" placeholder="Password" className='sm:h-[50px] h-[40px] w-8/12 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' {...register('password', {
               required: "* Password is required"
             })} />
-            <p className='text-red-500 -mt-3 text-xs self-start ps-5'>{errors.password?.message}</p>
+            <p className='text-red-500 text-xs'>{errors.password?.message}</p>
 
-            <button type='submit' id='loginbutton' className='text-black w-52 rounded-lg py-1 font-medium mt-2 bg-white'>
+            <button type='submit' id='loginbutton' className='text-black w-56 rounded-lg py-1 font-medium mt-2 bg-white'>
               <i className="fa-solid fa-right-to-bracket"></i>&nbsp;
               Login
             </button>
             {/* <p className='signup_link mt-3 text-gray-500'>Create an Account <Link className='text-white' style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => { setshowSignup(true); setshowLogin(false) }}> Signup</Link></p> */}
+            <div className='text-white flex gap-[5px]'>
+              <h1 className='sm:text-base text-sm font-medium'>Dont have an account </h1>
+              <button className={`sm:text-base text-sm rounded-l-lg transition-all`} onClick={() => { setshowLogin(!showLogin); setshowSignup(true) }}>
+                Signup
+              </button>
+            </div>
 
           </form>
         </div>

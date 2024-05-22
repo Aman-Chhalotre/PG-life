@@ -53,6 +53,7 @@ function Properties_List() {
 
     interestedpropertiesService.storeInterestedProperties(id, userData.$id)
       .then((response) => {
+        console.log(response)
       })
       .catch((err) => {
         console.log(err)

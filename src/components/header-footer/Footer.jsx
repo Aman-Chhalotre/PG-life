@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import '../../css/footer.css'
 import { gsap } from 'gsap/dist/gsap'
 import { useEffect } from 'react'
@@ -22,8 +21,8 @@ function Footer() {
 
   return (
     <>
-      <footer id="footer" className='h-28 bg-[#2e3830] flex text-white justify-center gap-10 pt-5 '>
-        <h1 className='text-gray-300 font-semibold'>© Aman Chhalotre</h1>
+      <footer id="footer" className='h-28 flex text-white justify-center items-center border-t'>
+        <h1 className='text-gray-500 font-semibold'>© Aman Chhalotre</h1>
       </footer>
     </>
   )

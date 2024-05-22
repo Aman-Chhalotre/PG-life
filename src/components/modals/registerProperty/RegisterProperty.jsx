@@ -3,6 +3,7 @@ import '../modalcss/modal.css'
 import { useForm, useFieldArray } from 'react-hook-form'
 import propertyService from '../../../appwrite/property'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function RegisterProperty() {
 
@@ -13,6 +14,7 @@ function RegisterProperty() {
       cityName: '',
       rent: '',
       gender: '',
+      amenities: [],
       description: '',
       images: [
         { image: '' },
@@ -22,6 +24,7 @@ function RegisterProperty() {
 
     }
   })
+
   const { register, handleSubmit, control, reset, formState } = form
   const { errors } = formState
 
@@ -33,12 +36,16 @@ function RegisterProperty() {
   const navigate = useNavigate()
 
 
-  function onSubmit(data) {
-    const cityName = data.cityName
-    propertyService.createProperty(data.name, data.address, data.description, data.gender,
-      String(data.rent), cityName.toUpperCase())
-      .then((value) => {
+  const userdata = useSelector((state) => state.authReducer.userData)
 
+  function onSubmit(data) {
+
+    const cityName = data.cityName
+
+    propertyService.createProperty(data.name, data.address, data.description, data.gender,
+      Number(data.rent), cityName.toUpperCase(), data.amenities, userdata.$id)
+      .then((value) => {
+        console.log(value)
         data.images.map((val) => {
           propertyService.storeImages(val.image[0])
             .then((response) => {
@@ -48,18 +55,30 @@ function RegisterProperty() {
 
                   propertyService.storePropertyImages(res.href, value.$id)
                     .then((res) => {
-                      // console.log(res)
+                      console.log(res)
+
                     })
-                  propertyService.setThumbnailImage(value.$id, res.href)
+                  console.log(value.$id)
+                  console.log(res.href)
+                  console.log(userdata.$id)
+                  propertyService.setThumbnailImage(value.$id, res.href, userdata.$id)
+                    .then((res) =>
+                      console.log(res)
+                    )
+                    .catch((err) => {
+                      console.log(err)
+                    })
                 })
               navigate('/')
             })
         })
 
       })
+
       .catch((err) => {
         console.log(err)
       })
+
   }
 
   return (
@@ -71,7 +90,7 @@ function RegisterProperty() {
 
 
 
-          <form className='bg-[black] sm:w-[80%] w-[100%] flex flex-col gap-5 rounded-lg p-3 shadow-lg shadow-black '>
+          <form className=' sm:w-[80%] w-[100%] flex flex-col gap-5 p-3 '>
 
             <div className='flex sm:flex-row flex-col gap-3 items-center'>
 
@@ -135,11 +154,82 @@ function RegisterProperty() {
             </div>
             <p className='text-red-600 sm:text-sm text-xs text-center'>{errors.gender?.message}</p>
 
+
+            <h1 className='sm:text-lg text-sm text-center font-semibold text-white'>Choose Amenities of your Property</h1>
+            <div className='text-white flex flex-col  gap-3 items-center'>
+
+              <div className='flex flex-col gap-3 text-start font-semibold sm:text-base text-xs'>
+
+
+                <div className='flex gap-2'>
+                  <label htmlFor="ac">Air Conditioner</label>
+                  <input id='ac' name='amenities' type="checkbox" value='AC' {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="bed">Bed</label>
+                  <input id='bed' type="checkbox" name='amenities' value="Bed" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="cctv">CCTV</label>
+                  <input id='cctv' type="checkbox" name='amenities' value="CCTV" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="dining">Dining</label>
+                  <input id='dining' type="checkbox" name='amenities' value="Dining" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="fireExtinguisher">Fire Extinguisher</label>
+                  <input id='fireExtinguisher' type="checkbox" name='amenities' value="Fire Extinguisher" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="geyser">Geyser</label>
+                  <input id='geyser' type="checkbox" name='amenities' value="Geyser" {...register("amenities")} />
+                </div>
+
+
+              </div>
+
+              <div className='flex flex-col gap-3 font-semibold'>
+
+
+                <div className='flex gap-2'>
+                  <label htmlFor="parking">Parking</label>
+                  <input id='parking' type="checkbox" name='amenities' value="Parking" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="powerBackup">Power Backup</label>
+                  <input id='powerBackup' type="checkbox" name='amenities' value="Power Backup" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="roWater">RO water</label>
+                  <input id='roWater' type="checkbox" name='amenities' value="RO water" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="tv">TV</label>
+                  <input id='tv' type="checkbox" name='amenities' value="TV" {...register("amenities")} />
+                </div>
+
+                <div className='flex gap-2'>
+                  <label htmlFor="wifi">Wifi</label>
+                  <input id='wifi' type="checkbox" name='amenities' value="Wifi" {...register("amenities")} />
+                </div>
+
+              </div>
+            </div>
+
             <div className='flex gap-3 items-center justify-center'>
 
               <div className='sm:w-[80%] w-[100%]'>
 
-                <textarea name='description' placeholder='Property Description' className='h-[100px] p-2 w-[100%] bg-[#1f1f1f] rounded text-white font-semibold sm:text-lg text-sm' {...register("description", {
+                <textarea name='description' placeholder='Property Description' className='h-[100px] p-2 w-[100%]  rounded text-black font-semibold sm:text-lg text-sm' {...register("description", {
                   required: "*gender is required"
                 })} />
                 <p className='text-red-600 sm:text-sm text-xs text-center'>{errors.description?.message}</p>
@@ -153,7 +243,7 @@ function RegisterProperty() {
 
           </form>
 
-          <form className='bg-black sm:w-[80%] w-[100%] rounded p-3 shadow-lg shadow-black' onSubmit={handleSubmit(onSubmit)}>
+          <form className=' sm:w-[80%] w-[100%] p-3' onSubmit={handleSubmit(onSubmit)}>
             <h1 className='text-xl text-white font-medium text-center mb-5'>Register Property Images</h1>
             <div className='flex flex-col items-center gap-5'>
 
@@ -167,8 +257,8 @@ function RegisterProperty() {
                 </div>
               ))}
 
-              <button className='p-1 bg-white rounded-full text-3xl font-smibold' onClick={() => { append({ image: '' }) }}>+</button>
-              <button type='submit' className='bg-white w-[100px] rounded p-1 font-medium'>Submit</button>
+              <button className='px-2.5 pb-1 bg-white rounded-full text-3xl font-smibold' onClick={() => { append({ image: '' }) }}>+</button>
+              <button type='submit' className='bg-white w-[200px] rounded p-1 font-medium'>Submit</button>
             </div>
           </form>
 

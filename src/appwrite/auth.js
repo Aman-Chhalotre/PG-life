@@ -35,7 +35,9 @@ export class AuthService {
     }
     async updatePref(label) {
         try {
-            return await this.account.updatePrefs({ 'label': label })
+            return await this.account.updatePrefs(
+                { 'label': label }
+            )
 
         } catch (error) {
             throw error;

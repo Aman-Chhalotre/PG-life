@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import '../css/home.css'
+import SearchBar from './Search/SearchBar.jsx'
 import delhi from '../assets/img/delhi.png'
 import bangalore from '../assets/img/bangalore.png'
 import mumbai from '../assets/img/mumbai.png'
 import hyderabad from '../assets/img/hyderabad.png'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap/dist/gsap'
 import { useEffect } from 'react'
 import propertyService from '../appwrite/property.js'
 import { useDispatch } from 'react-redux'
 import { getProperties } from '../../store/propertySlice.js'
+
 
 function Home() {
 
@@ -58,19 +60,21 @@ function Home() {
   return (
     <>
 
-      <div className=''>
-        <div id='bg' className='relative'>
-          <div id='banner' className='absolute h-96 w-full'>
+      <div className='h-[100vh] bg-transparent'>
+        <div id='bg' className=' relative h-[560px] w-full bg-cover bg-no-repeat bg-bottom'>
 
 
-            <h1 id='bannerText' className='md:text-5xl font-medium mt-10 overflow-hidden sm:text-4xl text-2xl  text-gray-400'><span
-              id='bannerTextSpan' className='text-gray-300'>Happiness</span> per Square Foot</h1>
+          <div id='banner' className='absolute z-50 h-96 w-full flex flex-col justify-center items-center ps-10 gap-5'>
+
+            <h1 id='bannerText' className='md:text-5xl font-medium mt-10 overflow-hidden sm:text-4xl text-2xl text-white  '><span
+              id='bannerTextSpan' className='text-[#E58B3A]'>Happiness</span> per Square Foot</h1>
+            <SearchBar></SearchBar>
 
           </div>
 
         </div>
 
-        <div className='sm:h-96 mb-5 text-center pt-20 h-auto'>
+        {/* <div className='sm:h-96 mb-5 text-center pt-20 h-auto bg-white'>
 
           <h1 id='cityLabel' className='sm:text-4xl font-medium text-2xl'>Major Cities</h1>
 
@@ -93,7 +97,7 @@ function Home() {
             </div>
 
           </div>
-        </div>
+        </div> */}
 
 
       </div>

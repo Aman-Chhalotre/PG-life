@@ -95,6 +95,8 @@ function Dashboard() {
           </div>
 
         </div>
+
+
         <div>
           <h1 className='text-start text-xl font-semibold text-gray-500'>Interested Properties</h1>
         </div>
@@ -150,7 +152,6 @@ function Dashboard() {
 
                 <div>
                   <Link to='/Property_Detail' onClick={() => { handleClick(property.$id) }} className='bg-cyan-600 w-24 p-1 px-5 rounded text-white font-medium hover:bg-cyan-700 '>View</Link>
-                  {console.log(property.$id)}
                 </div>
               </div>
 

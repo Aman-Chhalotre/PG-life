@@ -13,7 +13,10 @@ export class InterestedPropertiesService {
 
     async storeInterestedProperties(property_id, user_id) {
         try {
-            return await this.databases.createDocument(conf.appwriteDatabaseId, conf.appwriteInterestedUsersPropertiesCollectionId, ID.unique(),
+            return await this.databases.createDocument(
+                conf.appwriteDatabaseId,
+                conf.appwriteUserInterestedPropertiesCollectionId,
+                ID.unique(),
                 {
                     user_id,
                     property_id
@@ -26,21 +29,23 @@ export class InterestedPropertiesService {
 
     async getInterestedProperties(user_id) {
         try {
-            return await this.databases.listDocuments(conf.appwriteDatabaseId, conf.appwriteInterestedUsersPropertiesCollectionId,
+            return await this.databases.listDocuments(
+                conf.appwriteDatabaseId,
+                conf.appwriteUserInterestedPropertiesCollectionId,
                 [
                     Query.equal("user_id", [user_id]),
                 ]
             )
         } catch (error) {
-            console.log("Appwrite service :: storeInterestedProperties :: error", error)
+            console.log("Appwrite service :: getInterestedProperties :: error", error)
         }
     }
 
     async deleteInterestedProperties(id) {
         try {
-            return await this.databases.deleteDocument(conf.appwriteDatabaseId, conf.appwriteInterestedUsersPropertiesCollectionId, id,)
+            return await this.databases.deleteDocument(conf.appwriteDatabaseId, conf.appwriteUserInterestedPropertiesCollectionId, id)
         } catch (error) {
-            console.log("Appwrite service :: storeInterestedProperties :: error", error)
+            console.log("Appwrite service :: deleteInterestedProperties :: error", error)
         }
     }
 

@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     authService.getCurrentUser()
       .then((userData) => {
-        // console.log(userData)
+        console.log(userData)
         if (userData) {
           dispatch(getUserData({ userData }))
           if (userData.prefs.label == 'admin') {
