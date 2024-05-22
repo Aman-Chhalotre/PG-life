@@ -156,7 +156,7 @@ function RegisterProperty() {
 
 
             <h1 className='sm:text-lg text-sm text-center font-semibold text-white'>Choose Amenities of your Property</h1>
-            <div className='text-white flex flex-col  gap-3 items-center'>
+            <div className='text-white flex flex-col justify-center gap-3 items-center'>
 
               <div className='flex flex-col gap-3 text-start font-semibold sm:text-base text-xs'>
 
@@ -194,7 +194,7 @@ function RegisterProperty() {
 
               </div>
 
-              <div className='flex flex-col gap-3 font-semibold'>
+              <div className='flex flex-col gap-3 text-start font-semibold sm:text-base text-xs'>
 
 
                 <div className='flex gap-2'>
