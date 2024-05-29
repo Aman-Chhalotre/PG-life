@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useSignup from '../../../context/signup.js'
 import useLogin from '../../../context/login.js'
 import { useForm } from 'react-hook-form'
@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 
 function Signup_modal() {
-
+  const [showPassword, setShowPassword] = useState(false)
 
   const { showSignup, isSignup, setshowSignup } = useSignup()
   const { showLogin, setshowLogin, setPhone } = useLogin()
@@ -21,7 +21,7 @@ function Signup_modal() {
 
 
   const onSubmit = (data) => {
-
+    setShowPassword(false)
 
     authService.createAccount(data.email, data.password, data.fullName)
       .then((response) => {
@@ -78,9 +78,12 @@ function Signup_modal() {
             </div>
 
             <div className='w-10/12'>
-              <input type="password" name="password" placeholder="Password" className=' sm:h-[40px] h-[30px] w-10/12  p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' {...register('password', {
-                required: "* Password is required"
-              })} />
+              <div className='relative'>
+                <input id='password' type={`${(showPassword) ? 'text' : 'password'}`} name="password" placeholder="Password" className=' sm:h-[40px] h-[30px] w-10/12  p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' maxLength={15} {...register('password', {
+                  required: "* Password is required"
+                })} />
+                <i id='eye' className={`${(showPassword) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'} text-white text-lg absolute z-10 right-12`} onClick={() => { setShowPassword(!showPassword) }}></i>
+              </div>
               <p className='text-red-500 text-xs self-start '>{errors.password?.message}</p>
             </div>
 
@@ -88,17 +91,7 @@ function Signup_modal() {
 
               <div className=' flex items-baseline gap-2'>
                 <h1 className='text-white font-normal'>You want to :</h1>
-                {/* <label htmlFor="explore" className='text-white md:text-sm text-xs'>Explore Properties</label>
-                <input type="radio" id='explore' name='label' value='user' className=' ' {...register('label', {
-                  required: '* Please select one'
-                })} />
-              </div>
 
-              <div className='flex items-baseline gap-2'>
-                <label htmlFor="register" className='text-white md:text-sm text-xs'>Register Property</label>
-                <input type="radio" id='register' name='label' value='admin'  {...register('label', {
-                  required: '* Please select one'
-                })} /> */}
                 <select name="label" id="label" className=' bg-black p-2 rounded outline-none text-white focus:bg-transparent'{...register('label', {
                   required: '* Please select one'
                 })}>
@@ -116,8 +109,8 @@ function Signup_modal() {
             </button>
 
             <div className='flex text-white gap-[5px]'>
-              <h1 className='sm:text-base text-sm font-medium'>Already have an Account?</h1>
-              <button className={`sm:text-base text-sm border-none rounded-r-lg transition-all`} onClick={() => { setshowLogin(!showLogin); setshowSignup(false) }}>
+              <h1 className='sm:text-base text-sm '>Already have an Account?</h1>
+              <button className={`sm:text-base text-sm border-none rounded-r-lg transition-all font-medium`} onClick={() => { setshowLogin(!showLogin); setshowSignup(false) }}>
 
                 Login
               </button>

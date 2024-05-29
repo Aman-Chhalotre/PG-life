@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useLogin from '../../../context/login.js'
 import useSignup from '../../../context/signup.js'
@@ -11,6 +11,7 @@ import updateService from '../../../appwrite/upDate.js'
 
 
 function Login_modal() {
+  const [showPassword, setShowPassword] = useState(false)
 
   const { showLogin } = useLogin()
   const { setshowLogin } = useLogin()
@@ -27,7 +28,10 @@ function Login_modal() {
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
+
+
   const onSubmit = (data) => {
+    setShowPassword(false)
 
     authService.login(String(data.email), String(data.password))
       .then((userData) => {
@@ -107,9 +111,12 @@ function Login_modal() {
             })} />
             <p className='text-red-500 text-xs '>{errors.email?.message}</p>
 
-            <input type="password" name="password" placeholder="Password" className='sm:h-[50px] h-[40px] w-8/12 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' {...register('password', {
-              required: "* Password is required"
-            })} />
+            <div className='relative w-full'>
+              <input type={`${(showPassword) ? 'text' : 'password'}`} name="password" placeholder="Password" className='sm:h-[50px] h-[40px] w-8/12 me-2 p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' {...register('password', {
+                required: "* Password is required"
+              })} />
+              <i id='eye' className={`${(showPassword) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'} text-white text-lg absolute z-10 right-24`} onClick={() => { setShowPassword(!showPassword) }}></i>
+            </div>
             <p className='text-red-500 text-xs'>{errors.password?.message}</p>
 
             <button type='submit' id='loginbutton' className='text-black w-56 rounded-lg py-1 font-medium mt-2 bg-white'>
@@ -118,8 +125,8 @@ function Login_modal() {
             </button>
             {/* <p className='signup_link mt-3 text-gray-500'>Create an Account <Link className='text-white' style={{ textDecoration: "underline", cursor: "pointer" }} onClick={() => { setshowSignup(true); setshowLogin(false) }}> Signup</Link></p> */}
             <div className='text-white flex gap-[5px]'>
-              <h1 className='sm:text-base text-sm font-medium'>Dont have an account </h1>
-              <button className={`sm:text-base text-sm rounded-l-lg transition-all`} onClick={() => { setshowLogin(!showLogin); setshowSignup(true) }}>
+              <h1 className='sm:text-base text-sm '>Dont have an account?</h1>
+              <button className={`sm:text-base text-sm rounded-l-lg transition-all font-medium`} onClick={() => { setshowLogin(!showLogin); setshowSignup(true) }}>
                 Signup
               </button>
             </div>
