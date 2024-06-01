@@ -16,7 +16,7 @@ import progressSpinner from './assets/img/progress_spinner.gif'
 
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState()
 
   const [showLogin, setshowLogin] = useState(true)
   const [showSignup, setshowSignup] = useState(false)
@@ -34,6 +34,7 @@ function App() {
 
   useEffect(() => {
 
+    setLoading(true)
     authService.getCurrentUser()
       .then((userData) => {
         console.log(userData)
@@ -42,6 +43,7 @@ function App() {
           setLoading(false)
         } else {
           dispatch(logout())
+          setLoading(false)
         }
 
       })
@@ -55,9 +57,9 @@ function App() {
 
   return (
     <>
-      {(loading) ?
 
-        <div className='absolute z-50 h-full w-full flex items-center justify-center bg-[#1D1E22]'>
+      {(loading) ?
+        <div className={` flex absolute z-50 h-full w-full items-center justify-center bg-[#1D1E22]`}>
           <img src={progressSpinner} alt="" className='text-black size-10' />
         </div>
 
@@ -69,7 +71,9 @@ function App() {
             {(!authStatus) ?
 
               <Modals />
+
               :
+
               <SearchContextProvider >
 
 
@@ -86,6 +90,7 @@ function App() {
                 <Footer></Footer>
 
               </SearchContextProvider>
+
             }
 
           </SignupContextProvider>
