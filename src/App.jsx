@@ -43,12 +43,12 @@ function App() {
           setLoading(false)
         } else {
           dispatch(logout())
-          setLoading(false)
         }
 
       })
       .catch((error) => {
         console.log(error)
+        setLoading(false)
       })
 
 
