@@ -29,7 +29,7 @@ export class PropertyService {
                     amenities
                 },
                 [
-                    Permission.read(Role.user(userId)),
+                    Permission.read(Role.any()),
                     Permission.update(Role.user(userId)),
                     Permission.delete(Role.user(userId))
                 ]

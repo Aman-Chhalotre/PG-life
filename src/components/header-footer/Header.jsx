@@ -11,13 +11,18 @@ import propertyService from '../../appwrite/property.js'
 import { getProperties } from '../../../store/propertySlice.js'
 
 
-function Header({ isAdmin }) {
+function Header() {
+  const [isAdmin, setIsAdmin] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
 
   const userData = useSelector((state) => state.authReducer.userData)
   const navigate = useNavigate()
 
-
+  useEffect(() => {
+    if (userData?.prefs?.label == 'admin') {
+      setIsAdmin(true)
+    }
+  }, [])
 
   const dispatch = useDispatch()
 
@@ -62,19 +67,20 @@ function Header({ isAdmin }) {
 
         <div id='menu' className={`${(showMenu) ? 'h-full' : 'h-[0]'} w-[100%] transition-all duration-500 px-3 bg-[#F54B4B] absolute top-0 right-0 z-10`}>
           <div className={`${(showMenu) ? 'flex' : 'hidden'} sm:gap-2 gap-1 items-center justify-between`}>
-            <div id='buttons' className='flex items-center gap-3 mt-4'>
-
-              {
-
-                (isAdmin) ? <NavLink to='/RegisterProperty' className={({ isActive }) => ` block ${(isActive) ? 'text-orange-300' : 'text-white'} font-medium text-xs `} onClick={() => { setShowMenu(!showMenu) }}>Register Property</NavLink> : null
-              }
+            <div id='buttons' className='flex flex-col items-start justify-start gap-2 mt-1'>
 
               <NavLink to='/Dashboard' className={({ isActive }) => `${(isActive) ? 'text-orange-300' : 'text-white'}  md:text-sm text-xs`} onClick={() => { setShowMenu(!showMenu) }}>
                 <i className="fa-solid fa-user text-white"></i>&nbsp;
                 Dashboard
               </NavLink>
 
-              <span className='text-white'>|</span>
+              {
+
+                (isAdmin) ? <NavLink to='/RegisterProperty' className={({ isActive }) => ` block ${(isActive) ? 'text-orange-300' : 'text-white'} font-medium text-xs `} onClick={() => { setShowMenu(!showMenu) }}>Register Property</NavLink> : null
+              }
+
+
+              {/* <span className='text-white'>|</span> */}
 
               <button className='text-white md:text-sm text-xs' onClick={() => { onHandleclick(); setShowMenu(!showMenu) }}>
                 <i className="fa-solid fa-right-from-bracket text-white"></i>&nbsp;

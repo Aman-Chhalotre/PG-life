@@ -38,7 +38,7 @@ function Properties_List() {
     return () => ctx.revert();
   }, [])
 
-
+  const properties = useSelector((state) => state.propertyReducer.properties)
 
   function handleClick(id) {
     dispatch(getPropertyId({ id }))
@@ -68,7 +68,7 @@ function Properties_List() {
   }
 
 
-  const properties = useSelector((state) => state.propertyReducer.properties)
+
   return (
     <>
       <Filter showfilter={showfilter} setShowfilter={setShowfilter}></Filter>
