@@ -16,7 +16,7 @@ import progressSpinner from './assets/img/progress_spinner.gif'
 
 
 function App() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState()
 
   const [showLogin, setshowLogin] = useState(true)
   const [showSignup, setshowSignup] = useState(false)
@@ -33,9 +33,9 @@ function App() {
 
 
   useEffect(() => {
+    setLoading(true)
     authService.getCurrentUser()
       .then((userData) => {
-        setLoading(true)
         console.log(userData)
         if (userData) {
           dispatch(getUserData({ userData }))
