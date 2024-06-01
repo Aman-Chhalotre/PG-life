@@ -113,7 +113,7 @@ function Signup_modal() {
                 <input id='password' type={`${(showPassword) ? 'text' : 'password'}`} name="password" placeholder="Password" className=' sm:h-[40px] h-[30px] w-10/12  p-0.5 bg-transparent border-b border-gray-500 text-gray-300 outline-none' maxLength={15} {...register('password', {
                   required: "* Password is required"
                 })} />
-                <i id='eye' className={`${(showPassword) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'} text-white text-lg absolute z-10 right-12`} onClick={() => { setShowPassword(!showPassword) }}></i>
+                <i id='eye' className={`${(showPassword) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'} text-white text-lg absolute z-10 right-[10%]`} onClick={() => { setShowPassword(!showPassword) }}></i>
               </div>
               <p className='text-red-500 text-xs self-start '>{errors.password?.message}</p>
             </div>
