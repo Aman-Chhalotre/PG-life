@@ -25,7 +25,7 @@ function Dashboard() {
 
 
   useEffect(() => {
-    interestedpropertiesService.getInterestedProperties(data.$id)
+    interestedpropertiesService.getInterestedProperties(data?.$id)
       .then((res) => {
 
         propertyService.getProperties()
